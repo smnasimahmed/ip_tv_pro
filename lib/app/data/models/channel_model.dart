@@ -51,14 +51,18 @@ class PlaylistResponse {
     final rawList = json['channels'] as List<dynamic>? ?? [];
 
     final channels = rawList
-        .map((e) => Channel.fromJson(e as Map<String, dynamic>))
+        .whereType<Map>()
+        .map((e) => Channel.fromJson(Map<String, dynamic>.from(e)))
         .where((c) => c.name.isNotEmpty && c.url.isNotEmpty)
         .toList();
 
+    final rawInfo = json['info'];
+    final info = rawInfo is Map
+        ? PlaylistInfo.fromJson(Map<String, dynamic>.from(rawInfo))
+        : PlaylistInfo();
+
     return PlaylistResponse(
-      info: PlaylistInfo.fromJson(
-        json['info'] as Map<String, dynamic>? ?? <String, dynamic>{},
-      ),
+      info: info,
       channels: channels,
     );
   }

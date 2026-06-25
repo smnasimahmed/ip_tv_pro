@@ -33,8 +33,10 @@ class ChannelController extends GetxController {
       channels = result.channels;
       info = result.info;
       _applyFilter();
-    } catch (_) {
-      errorMessage = 'Could not load channels. Pull down to retry.';
+    } catch (e) {
+      // TEMP: showing the raw error for diagnosis. Once confirmed working,
+      // you can switch this back to a friendly generic message.
+      errorMessage = 'Could not load channels:\n$e';
     } finally {
       isLoading = false;
       update();

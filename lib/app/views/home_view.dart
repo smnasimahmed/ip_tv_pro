@@ -51,13 +51,15 @@ class HomeView extends StatelessWidget {
         child: ListView(
           children: [
             const SizedBox(height: 120),
-            Center(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
                   const Icon(Icons.cloud_off_rounded, size: 48, color: Colors.grey),
                   const SizedBox(height: 12),
-                  Text(
+                  SelectableText(
                     controller.errorMessage!,
+                    textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ],
