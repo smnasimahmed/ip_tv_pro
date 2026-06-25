@@ -10,6 +10,18 @@ class Channel {
       url: (json['url'] ?? '').toString().trim(),
     );
   }
+
+  static const _fileExtensions = {
+    'mp4', 'mp3', 'mkv', 'avi', 'mov', 'm4v', 'wav', 'aac', 'flac', 'webm',
+  };
+
+  bool get isStreamingFormat {
+    final path = Uri.tryParse(url)?.path ?? url;
+    final dotIndex = path.lastIndexOf('.');
+    if (dotIndex == -1 || dotIndex == path.length - 1) return true;
+    final ext = path.substring(dotIndex + 1).toLowerCase();
+    return !_fileExtensions.contains(ext);
+  }
 }
 
 class PlaylistInfo {
@@ -53,7 +65,7 @@ class PlaylistResponse {
     final channels = rawList
         .whereType<Map>()
         .map((e) => Channel.fromJson(Map<String, dynamic>.from(e)))
-        .where((c) => c.name.isNotEmpty && c.url.isNotEmpty)
+        .where((c) => c.name.isNotEmpty && c.url.isNotEmpty && c.isStreamingFormat)
         .toList();
 
     final rawInfo = json['info'];
